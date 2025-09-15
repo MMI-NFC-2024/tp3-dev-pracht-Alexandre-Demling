@@ -7,76 +7,74 @@ import penguins from "../assets/penguins.json";
 const penguinsAdelie = penguins.filter(p => p.species === "Adelie");
 const penguinsGentoo = penguins.filter(p => p.species === "Gentoo");
 const penguinsChinstrap = penguins.filter(p => p.species === "Chinstrap");
-
 const tabs = ["Adelie", "Gentoo", "Chinstrap"];
 ---
 
 <Layout>
   <main class="max-w-5xl mx-auto px-4 py-8">
+
     <div class="bg-blue-600 text-white p-6 mb-8 rounded">
-      <h1 class="text-2xl font-bold text-center mb-2">Toutes les espèces avec Tabs</h1>
-      <p class="text-center text-blue-100">Navigation rapide entre les espèces</p>
+      <h1 class="text-2xl font-bold text-center mb-2">Toutes les espèces avec scroll horizontal</h1>
+      <p class="text-center text-blue-100">Faites défiler horizontalement pour naviguer entre les espèces</p>
     </div>
 
-    <!-- Onglets -->
-    <div class="flex justify-center gap-4 mb-4">
-      {tabs.map((tab, index) => (
-        <button class="tab-btn border-b-2 border-transparent px-4 py-2 font-semibold" data-index={index}>
-          {tab}
-        </button>
-      ))}
-    </div>
+    
+    <nav class="mb-8 text-center">
+      <select id="species" class="border rounded p-1 text-sm md:text-base" aria-label="Choisir l'espèce">
+        {tabs.map((tab) => (
+          <option value={tab}>{tab}</option>
+        ))}
+      </select>
+    </nav>
 
-    <!-- Contenus -->
-    <div>
-      <div class="tab-content">
-        <PlotFigure
-          options={{
-            marks: [Plot.dot(penguinsAdelie, { x: "culmen_length_mm", y: "culmen_depth_mm", stroke: "species", fill: "species", fillOpacity: 0.7, r: 3 })],
-            marginLeft: 50,
-            marginBottom: 50,
-            grid: true
-          }}
-        />
+    
+    <div
+      id="carousel"
+      class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4"
+      style="scroll-behavior: smooth;"
+    >
+      <div class="min-w-full snap-center shrink-0">
+        <h2 class="text-center font-semibold mb-2">Adelie</h2>
+        <PlotFigure options={{
+          marks: [Plot.dot(penguinsAdelie, { x: "culmen_length_mm", y: "culmen_depth_mm", stroke: "species", fill: "species", fillOpacity: 0.7, r: 3 })],
+          marginLeft: 50, marginBottom: 50, grid: true
+        }} />
       </div>
-      <div class="tab-content hidden">
-        <PlotFigure
-          options={{
-            marks: [Plot.dot(penguinsGentoo, { x: "culmen_length_mm", y: "culmen_depth_mm", stroke: "species", fill: "species", fillOpacity: 0.7, r: 3 })],
-            marginLeft: 50,
-            marginBottom: 50,
-            grid: true
-          }}
-        />
+
+      <div class="min-w-full snap-center shrink-0">
+        <h2 class="text-center font-semibold mb-2">Gentoo</h2>
+        <PlotFigure options={{
+          marks: [Plot.dot(penguinsGentoo, { x: "culmen_length_mm", y: "culmen_depth_mm", stroke: "species", fill: "species", fillOpacity: 0.7, r: 3 })],
+          marginLeft: 50, marginBottom: 50, grid: true
+        }} />
       </div>
-      <div class="tab-content hidden">
-        <PlotFigure
-          options={{
-            marks: [Plot.dot(penguinsChinstrap, { x: "culmen_length_mm", y: "culmen_depth_mm", stroke: "species", fill: "species", fillOpacity: 0.7, r: 3 })],
-            marginLeft: 50,
-            marginBottom: 50,
-            grid: true
-          }}
-        />
+
+      <div class="min-w-full snap-center shrink-0">
+        <h2 class="text-center font-semibold mb-2">Chinstrap</h2>
+        <PlotFigure options={{
+          marks: [Plot.dot(penguinsChinstrap, { x: "culmen_length_mm", y: "culmen_depth_mm", stroke: "species", fill: "species", fillOpacity: 0.7, r: 3 })],
+          marginLeft: 50, marginBottom: 50, grid: true
+        }} />
       </div>
     </div>
 
     <script>
-      const tabsButtons = document.querySelectorAll(".tab-btn");
-      const tabsContents = document.querySelectorAll(".tab-content");
+      const tabs = ["Adelie", "Gentoo", "Chinstrap"];
 
-      tabsButtons.forEach((btn, index) => {
-        btn.addEventListener("click", () => {
-          tabsContents.forEach(content => content.classList.add("hidden"));
-          tabsContents[index].classList.remove("hidden");
+      document.addEventListener("DOMContentLoaded", () => {
+        const selectMenu = document.querySelector("#species");
+        const carousel = document.querySelector("#carousel");
 
-          tabsButtons.forEach(b => b.classList.remove("border-blue-600", "font-bold"));
-          btn.classList.add("border-blue-600", "font-bold");
+        
+        selectMenu?.addEventListener("change", (evt) => {
+          const index = tabs.indexOf(evt.target.value);
+          if (index >= 0) {
+            const child = carousel.children[index];
+            child.scrollIntoView({ behavior: "smooth", inline: "center" });
+          }
         });
       });
-
-      // Afficher le premier onglet par défaut
-      tabsButtons[0].classList.add("border-blue-600", "font-bold");
     </script>
+
   </main>
 </Layout>

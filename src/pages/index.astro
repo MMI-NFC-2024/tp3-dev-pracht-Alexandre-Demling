@@ -1,0 +1,77 @@
+---
+import PlotFigure from "../components/PlotFigure.astro";
+import Layout from "../layouts/Layout.astro";
+import * as Plot from "@observablehq/plot";
+import penguins from "../assets/penguins.json";
+---
+
+<Layout>
+  <main class="max-w-5xl mx-auto px-4 py-8">
+    <div class="bg-blue-600 text-white p-6 mb-8 rounded">
+      <h1 class="text-2xl font-bold text-center mb-2">
+        Test Astro et Plot (Observablehq)
+      </h1>
+      <p class="text-center text-blue-100">
+        Visualisation et exploration des données sur les penguins
+      </p>
+    </div>
+
+    <div class="bg-white border p-4 mb-8 rounded">
+      <h2 class="text-lg font-bold mb-2">Vue d’ensemble</h2>
+      <PlotFigure
+        options={{
+          marks: [
+            Plot.dot(penguins, {
+              x: "culmen_length_mm",
+              y: "culmen_depth_mm",
+              stroke: "species",
+              fill: "species",
+              fillOpacity: 0.7,
+              r: 3,
+            }),
+          ],
+          marginLeft: 50,
+          marginBottom: 50,
+          grid: true,
+        }}
+      />
+    </div>
+
+    <div class="mb-8">
+      <h3 class="text-xl font-bold mb-4 text-center">Choisissez votre approche</h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white border p-4 rounded">
+          <h4 class="font-bold text-blue-600 mb-3">Pages Séparées</h4>
+          <div class="space-y-2">
+            <a href="/species/Adelie" class="block bg-blue-100 text-blue-700 px-3 py-2 rounded hover:bg-blue-200">
+              Adelie
+            </a>
+            <a href="/species/Gentoo" class="block bg-green-100 text-green-700 px-3 py-2 rounded hover:bg-green-200">
+              Gentoo
+            </a>
+            <a href="/species/Chinstrap" class="block bg-orange-100 text-orange-700 px-3 py-2 rounded hover:bg-orange-200">
+              Chinstrap
+            </a>
+          </div>
+        </div>
+
+        <div class="bg-white border p-4 rounded">
+          <h4 class="font-bold text-purple-600 mb-3">Interface Iframe</h4>
+          <p class="text-sm text-gray-600 mb-3">Navigation sans rechargement</p>
+          <a href="/test-iframe" class="block bg-purple-100 text-purple-700 px-3 py-2 rounded hover:bg-purple-200 text-center">
+            Accéder
+          </a>
+        </div>
+
+        <div class="bg-white border p-4 rounded">
+          <h4 class="font-bold text-teal-600 mb-3">Slider Interactif</h4>
+          <p class="text-sm text-gray-600 mb-3">Toutes les espèces unifiées</p>
+          <a href="/slider-page" class="block bg-teal-100 text-teal-700 px-3 py-2 rounded hover:bg-teal-200 text-center">
+            Explorer
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>

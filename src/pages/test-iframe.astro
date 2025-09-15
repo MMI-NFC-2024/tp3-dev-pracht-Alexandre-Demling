@@ -1,0 +1,47 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+  <main class="max-w-5xl mx-auto px-4 py-8">
+    <div class="bg-blue-600 text-white p-6 mb-8 rounded">
+      <h1 class="text-2xl font-bold text-center mb-2">Test avec Iframe</h1>
+      <p class="text-center text-blue-100">Navigation interne sans rechargement</p>
+    </div>
+
+    <nav class="mb-8">
+      <ul class="flex flex-wrap justify-center gap-4 text-sm md:text-base">
+        <li>
+          <a href="/species/Adelie" target="species-frame" class="text-blue-600 hover:text-blue-800">
+            Adelie
+          </a>
+        </li>
+        <li>
+          <a href="/species/Gentoo" target="species-frame" class="text-blue-600 hover:text-blue-800">
+            Gentoo
+          </a>
+        </li>
+        <li>
+          <a href="/species/Chinstrap" target="species-frame" class="text-blue-600 hover:text-blue-800">
+            Chinstrap
+          </a>
+        </li>
+        <li>
+          <a href="/" class="text-gray-600 hover:text-gray-800">
+            ← Retour
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="bg-white border rounded p-2">
+      <iframe
+        name="species-frame"
+        src="/species/Adelie"
+        width="100%"
+        height="600"
+        class="w-full border border-gray-300 rounded"
+      ></iframe>
+    </div>
+  </main>
+</Layout>

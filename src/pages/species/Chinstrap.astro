@@ -28,7 +28,7 @@ const penguinsChinstrap = penguins.filter(({ species }) => species === "Chinstra
         const value = evt.target.value;
         const segments = location.pathname.split("/");
         segments[segments.length - 1] = value;
-        location.pathname = segments.join("/");
+        location.pathname = segments.join("/") + "/";
       });
     </script>
 

@@ -1,12 +1,14 @@
 ---
 import PlotFigure from "../components/PlotFigure.astro";
 import Layout from "../layouts/Layout.astro";
-import { Tabs, TabList, Tab, TabPanel } from "https://accessible-astro.incluud.dev/components/tabs/";
+import * as Plot from "@observablehq/plot";
 import penguins from "../assets/penguins.json";
 
 const penguinsAdelie = penguins.filter(p => p.species === "Adelie");
 const penguinsGentoo = penguins.filter(p => p.species === "Gentoo");
 const penguinsChinstrap = penguins.filter(p => p.species === "Chinstrap");
+
+const tabs = ["Adelie", "Gentoo", "Chinstrap"];
 ---
 
 <Layout>
@@ -16,14 +18,18 @@ const penguinsChinstrap = penguins.filter(p => p.species === "Chinstrap");
       <p class="text-center text-blue-100">Navigation rapide entre les espèces</p>
     </div>
 
-    <Tabs selected={0}>
-      <TabList class="flex justify-center gap-4 mb-4">
-        <Tab>Adelie</Tab>
-        <Tab>Gentoo</Tab>
-        <Tab>Chinstrap</Tab>
-      </TabList>
+    <!-- Onglets -->
+    <div class="flex justify-center gap-4 mb-4">
+      {tabs.map((tab, index) => (
+        <button class="tab-btn border-b-2 border-transparent px-4 py-2 font-semibold" data-index={index}>
+          {tab}
+        </button>
+      ))}
+    </div>
 
-      <TabPanel>
+    <!-- Contenus -->
+    <div>
+      <div class="tab-content">
         <PlotFigure
           options={{
             marks: [Plot.dot(penguinsAdelie, { x: "culmen_length_mm", y: "culmen_depth_mm", stroke: "species", fill: "species", fillOpacity: 0.7, r: 3 })],
@@ -32,9 +38,8 @@ const penguinsChinstrap = penguins.filter(p => p.species === "Chinstrap");
             grid: true
           }}
         />
-      </TabPanel>
-
-      <TabPanel>
+      </div>
+      <div class="tab-content hidden">
         <PlotFigure
           options={{
             marks: [Plot.dot(penguinsGentoo, { x: "culmen_length_mm", y: "culmen_depth_mm", stroke: "species", fill: "species", fillOpacity: 0.7, r: 3 })],
@@ -43,9 +48,8 @@ const penguinsChinstrap = penguins.filter(p => p.species === "Chinstrap");
             grid: true
           }}
         />
-      </TabPanel>
-
-      <TabPanel>
+      </div>
+      <div class="tab-content hidden">
         <PlotFigure
           options={{
             marks: [Plot.dot(penguinsChinstrap, { x: "culmen_length_mm", y: "culmen_depth_mm", stroke: "species", fill: "species", fillOpacity: 0.7, r: 3 })],
@@ -54,7 +58,25 @@ const penguinsChinstrap = penguins.filter(p => p.species === "Chinstrap");
             grid: true
           }}
         />
-      </TabPanel>
-    </Tabs>
+      </div>
+    </div>
+
+    <script>
+      const tabsButtons = document.querySelectorAll(".tab-btn");
+      const tabsContents = document.querySelectorAll(".tab-content");
+
+      tabsButtons.forEach((btn, index) => {
+        btn.addEventListener("click", () => {
+          tabsContents.forEach(content => content.classList.add("hidden"));
+          tabsContents[index].classList.remove("hidden");
+
+          tabsButtons.forEach(b => b.classList.remove("border-blue-600", "font-bold"));
+          btn.classList.add("border-blue-600", "font-bold");
+        });
+      });
+
+      // Afficher le premier onglet par défaut
+      tabsButtons[0].classList.add("border-blue-600", "font-bold");
+    </script>
   </main>
 </Layout>

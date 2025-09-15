@@ -9,29 +9,12 @@ import Layout from "../layouts/Layout.astro";
       <p class="text-center text-blue-100">Navigation interne sans rechargement</p>
     </div>
 
-    <nav class="mb-8">
-      <ul class="flex flex-wrap justify-center gap-4 text-sm md:text-base">
-        <li>
-          <a href="/species/Adelie" target="species-frame" class="text-blue-600 hover:text-blue-800">
-            Adelie
-          </a>
-        </li>
-        <li>
-          <a href="/species/Gentoo" target="species-frame" class="text-blue-600 hover:text-blue-800">
-            Gentoo
-          </a>
-        </li>
-        <li>
-          <a href="/species/Chinstrap" target="species-frame" class="text-blue-600 hover:text-blue-800">
-            Chinstrap
-          </a>
-        </li>
-        <li>
-          <a href="/" class="text-gray-600 hover:text-gray-800">
-            ← Retour
-          </a>
-        </li>
-      </ul>
+    <nav class="mb-8 text-center">
+      <select id="species-frame" class="border rounded p-1 text-sm md:text-base">
+        <option value="Adelie">Adelie</option>
+        <option value="Gentoo">Gentoo</option>
+        <option value="Chinstrap">Chinstrap</option>
+      </select>
     </nav>
 
     <div class="bg-white border rounded p-2">
@@ -43,5 +26,12 @@ import Layout from "../layouts/Layout.astro";
         class="w-full border border-gray-300 rounded"
       ></iframe>
     </div>
+
+    <script>
+      const iframe = document.querySelector("iframe[name='species-frame']");
+      document.querySelector("#species-frame")?.addEventListener("change", (evt) => {
+        iframe.src = "/species/" + evt.target.value;
+      });
+    </script>
   </main>
 </Layout>

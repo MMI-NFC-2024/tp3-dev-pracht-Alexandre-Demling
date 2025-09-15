@@ -4,7 +4,6 @@ import Layout from "../../layouts/Layout.astro";
 import * as Plot from "@observablehq/plot";
 import penguins from "../../assets/penguins.json";
 
-// Filtrer correctement les Gentoo
 const penguinsGentoo = penguins.filter(({ species }) => species === "Gentoo");
 ---
 
@@ -15,42 +14,39 @@ const penguinsGentoo = penguins.filter(({ species }) => species === "Gentoo");
       <p class="text-center text-blue-100">Analyse morphologique de l’espèce Gentoo</p>
     </div>
 
+    <!-- Select menu -->
     <nav class="mb-8 text-center">
       <select id="species" class="border rounded p-1 text-sm md:text-base">
         <option value="Adelie" selected={Astro.url.pathname.includes("Adelie")}>Adelie</option>
-        <option value="Gentoo" selected={Astro.url.pathname.includes("Gentoo")}>Gentoo</option>
         <option value="Chinstrap" selected={Astro.url.pathname.includes("Chinstrap")}>Chinstrap</option>
+        <option value="Gentoo" selected={Astro.url.pathname.includes("Gentoo")}>Gentoo</option>
       </select>
     </nav>
 
     <script>
       document.querySelector("#species")?.addEventListener("change", (evt) => {
         const value = evt.target.value;
-        const segments = location.pathname.split("/");
-        segments[segments.length - 1] = value;
-        location.pathname = segments.join("/");
+        location.pathname = "/species/" + value;
       });
     </script>
 
     <div class="bg-white border p-4 rounded">
       <h2 class="text-lg font-bold mb-2">Culmen Length vs Depth</h2>
-      <PlotFigure
-        options={{
-          marks: [
-            Plot.dot(penguinsGentoo, {
-              x: "culmen_length_mm",
-              y: "culmen_depth_mm",
-              stroke: "species",
-              fill: "species",
-              fillOpacity: 0.7,
-              r: 3,
-            }),
-          ],
-          marginLeft: 50,
-          marginBottom: 50,
-          grid: true,
-        }}
-      />
+      <PlotFigure options={{
+        marks: [
+          Plot.dot(penguinsGentoo, {
+            x: "culmen_length_mm",
+            y: "culmen_depth_mm",
+            stroke: "species",
+            fill: "species",
+            fillOpacity: 0.7,
+            r: 3,
+          }),
+        ],
+        marginLeft: 50,
+        marginBottom: 50,
+        grid: true,
+      }} />
     </div>
   </main>
 </Layout>

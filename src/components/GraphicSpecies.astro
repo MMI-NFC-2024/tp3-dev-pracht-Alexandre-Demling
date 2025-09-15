@@ -1,0 +1,30 @@
+---
+import PlotFigure from "./PlotFigure.astro";
+import * as Plot from "@observablehq/plot";
+import penguins from "../assets/penguins.json";
+
+const { species } = Astro.props;
+
+const data = penguins.filter((p) => p.species === species);
+---
+
+<div class="bg-white border p-4 rounded">
+  <h2 class="text-lg font-bold mb-2">{species} Culmen Length vs Depth</h2>
+  <PlotFigure
+    options={{
+      marks: [
+        Plot.dot(data, {
+          x: "culmen_length_mm",
+          y: "culmen_depth_mm",
+          stroke: "species",
+          fill: "species",
+          fillOpacity: 0.7,
+          r: 3,
+        }),
+      ],
+      marginLeft: 50,
+      marginBottom: 50,
+      grid: true,
+    }}
+  />
+</div>

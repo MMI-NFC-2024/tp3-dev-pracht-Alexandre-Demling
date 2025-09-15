@@ -1,10 +1,6 @@
 ---
-import PlotFigure from "../../components/PlotFigure.astro";
 import Layout from "../../layouts/Layout.astro";
-import * as Plot from "@observablehq/plot";
-import penguins from "../../assets/penguins.json";
-
-const penguinsAdelie = penguins.filter(({ species }) => species === "Adelie");
+import GraphicSpecies from "../../components/GraphicSpecies.astro";
 ---
 
 <Layout>
@@ -16,9 +12,9 @@ const penguinsAdelie = penguins.filter(({ species }) => species === "Adelie");
 
     <nav class="mb-8 text-center">
       <select id="species" class="border rounded p-1 text-sm md:text-base">
-        <option value="Adelie" selected={Astro.url.pathname.includes("Adelie")}>Adelie</option>
-        <option value="Chinstrap" selected={Astro.url.pathname.includes("Chinstrap")}>Chinstrap</option>
-        <option value="Gentoo" selected={Astro.url.pathname.includes("Gentoo")}>Gentoo</option>
+        <option value="Adelie" selected>Adelie</option>
+        <option value="Gentoo">Gentoo</option>
+        <option value="Chinstrap">Chinstrap</option>
       </select>
     </nav>
 
@@ -29,23 +25,6 @@ const penguinsAdelie = penguins.filter(({ species }) => species === "Adelie");
       });
     </script>
 
-    <div class="bg-white border p-4 rounded">
-      <h2 class="text-lg font-bold mb-2">Culmen Length vs Depth</h2>
-      <PlotFigure options={{
-        marks: [
-          Plot.dot(penguinsAdelie, {
-            x: "culmen_length_mm",
-            y: "culmen_depth_mm",
-            stroke: "species",
-            fill: "species",
-            fillOpacity: 0.7,
-            r: 3,
-          }),
-        ],
-        marginLeft: 50,
-        marginBottom: 50,
-        grid: true,
-      }} />
-    </div>
+    <GraphicSpecies species="Adelie" />
   </main>
 </Layout>
